@@ -65,12 +65,12 @@ def simulated_annealing(problem, schedule):
         https://github.com/aimacode/aima-pseudocode/blob/master/md/Simulated-Annealing.md
     """
     t=1
-    delta_E=0
+    delt_E=0
     current_state=problem.copy()
     while True:
         T=schedule(t)
-        print(t)
-        print(T)
+        # print(t)
+        # print(T)
 #         print("T",T,"t",t)
         if T<=1e-10:
             # Return the current state
@@ -80,12 +80,16 @@ def simulated_annealing(problem, schedule):
             # print("Problem is ",problem)
             next_state=random.choice(current_state.successors())
             delt_E=next_state.get_value()-current_state.get_value()
+
             if delt_E > 0:
+                # print("IN the if delt_E>0")
                 current_state = next_state
             else:
-                current_state = next_state if random.rand() < np.exp(delta_E/t) else current_state
+                current_state = next_state if random.rand() > np.exp(delt_E/t) else current_state
                 # Only enters here if delta_E is less than zero, so e^~~ will always be <1
         t+=1
+        # if t==15:
+        #     return current_state
 
 
 class TravelingSalesmanProblem:
@@ -178,7 +182,9 @@ class TravelingSalesmanProblem:
     def get_value(self):
         Total_Distance=0
         Cities=self.copy()
+        # print("In Get_Value for the following path: ", Cities.path)
         thecoords=Cities.coords
+        # print("The coords are: ", thecoords)
         NumCities=len(thecoords)
         for i in range(NumCities):
             if i==0:
